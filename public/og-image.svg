@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="t" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#c4b5fd"/>
+      <stop offset="1" stop-color="#93c5fd"/>
+    </linearGradient>
+    <radialGradient id="a" cx="0.2" cy="0.1" r="0.7">
+      <stop offset="0" stop-color="#7c3aed" stop-opacity=".45"/>
+      <stop offset="1" stop-color="#7c3aed" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="b" cx="0.9" cy="0.9" r="0.6">
+      <stop offset="0" stop-color="#2563eb" stop-opacity=".4"/>
+      <stop offset="1" stop-color="#2563eb" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#07080f"/>
+  <rect width="1200" height="630" fill="url(#a)"/>
+  <rect width="1200" height="630" fill="url(#b)"/>
+  <text x="96" y="250" font-family="Segoe UI, system-ui, sans-serif" font-size="30" fill="#9b9eb8" letter-spacing="6">SOFTWARE ENGINEER</text>
+  <text x="96" y="340" font-family="Segoe UI, system-ui, sans-serif" font-size="76" font-weight="700" fill="url(#t)">Gowri Priya Chelluri</text>
+  <text x="96" y="410" font-family="Segoe UI, system-ui, sans-serif" font-size="32" fill="#d6d7e4">Frontend &amp; Full Stack Developer · AI Enthusiast</text>
+</svg>

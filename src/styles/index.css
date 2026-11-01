@@ -1,0 +1,184 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ───────── Theme tokens (RGB channels so Tailwind can apply alpha) ───────── */
+@layer base {
+  :root {
+    --bg: 247 247 251;
+    --surface: 255 255 255;
+    --surface-2: 240 240 247;
+    --line: 223 223 235;
+    --fg: 17 17 30;
+    --muted: 84 86 110;
+    --accent: 109 40 217;
+    --accent-2: 37 99 235;
+    --success: 22 163 74;
+    --grid-line: 17 17 30;
+    --grid-opacity: 0.05;
+    --blob-opacity: 0.22;
+    color-scheme: light;
+  }
+
+  .dark {
+    --bg: 7 8 15;
+    --surface: 13 14 25;
+    --surface-2: 20 21 36;
+    --line: 39 41 64;
+    --fg: 237 238 246;
+    --muted: 156 159 186;
+    --accent: 167 139 250;
+    --accent-2: 96 165 250;
+    --success: 74 222 128;
+    --grid-line: 255 255 255;
+    --grid-opacity: 0.04;
+    --blob-opacity: 0.32;
+    color-scheme: dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-bg font-sans text-fg antialiased;
+    text-rendering: optimizeLegibility;
+    /* Entrance animations start slightly off-axis; never let them widen the page. */
+    overflow-x: clip;
+    transition: background-color 0.4s ease, color 0.4s ease;
+  }
+
+  section[id] {
+    scroll-margin-top: 5.5rem;
+  }
+
+  ::selection {
+    background: rgb(var(--accent) / 0.3);
+  }
+
+  :focus-visible {
+    outline: 2px solid rgb(var(--accent));
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+}
+
+/* ───────── Reusable component classes ───────── */
+@layer components {
+  .text-gradient {
+    @apply bg-gradient-to-r from-accent via-[#8b8cf8] to-accent-2 bg-clip-text text-transparent;
+    background-size: 200% auto;
+  }
+
+  .card {
+    @apply relative rounded-3xl border border-line/70 bg-surface/70 shadow-card backdrop-blur-sm;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-line/80 bg-surface-2/70 px-3 py-1 text-xs font-medium text-fg/85;
+  }
+
+  .eyebrow {
+    @apply font-mono text-xs font-medium uppercase tracking-[0.2em] text-accent;
+  }
+
+  /* Animated underline for inline links */
+  .link-underline {
+    @apply relative inline-flex items-center;
+  }
+  .link-underline::after {
+    content: '';
+    @apply absolute -bottom-0.5 left-0 h-px w-full origin-right scale-x-0 bg-gradient-to-r from-accent to-accent-2;
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .link-underline:hover::after,
+  .link-underline:focus-visible::after {
+    @apply origin-left scale-x-100;
+  }
+
+  /* Rotating gradient border, revealed on hover / focus */
+  .glow-border::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: conic-gradient(
+      from var(--angle),
+      transparent 0%,
+      transparent 55%,
+      rgb(var(--accent)) 72%,
+      rgb(var(--accent-2)) 86%,
+      transparent 100%
+    );
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    animation: spin-angle 5s linear infinite;
+    animation-play-state: paused;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .glow-border:hover::before,
+  .glow-border:focus-within::before {
+    opacity: 1;
+    animation-play-state: running;
+  }
+
+  /* Soft spotlight that follows the pointer inside a card (--mx / --my set in JS) */
+  .card-spotlight::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+      420px circle at var(--mx, 50%) var(--my, 50%),
+      rgb(var(--accent) / 0.1),
+      transparent 45%
+    );
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+  }
+  .card-spotlight:hover::after {
+    opacity: 1;
+  }
+
+  .bg-grid {
+    background-image: linear-gradient(rgb(var(--grid-line) / var(--grid-opacity)) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(var(--grid-line) / var(--grid-opacity)) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+}
+
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes spin-angle {
+  to {
+    --angle: 360deg;
+  }
+}
+
+/* ───────── Reduced motion: keep everything readable and still ───────── */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .motion-decor {
+    display: none !important;
+  }
+}
